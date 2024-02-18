@@ -19,11 +19,18 @@ namespace SearchService
             Console.WriteLine("--> Consuming auction updated: " + context.Message.Id);
 
             var item = _mapper.Map<Item>(context.Message);
-            
-            // TODO - write a Linq query for MongoDB which updates the specific Auction
-            // var result = await DB.Update<Item>()
-            
-            await item.SaveAsync();
+            var result = await DB.Update<Item>().Match(a => a.ID == context.Message.Id)
+                .ModifyOnly(x => new
+                {
+                    x.Color,
+                    x.Make,
+                    x.Model,
+                    x.Year,
+                    x.Mileage
+                }, item).ExecuteAsync();
+
+            if (!result.IsAcknowledged)
+                throw new MessageException(typeof(AuctionUpdated), "Problem  updating mongodb.");
         }
     }
 }
