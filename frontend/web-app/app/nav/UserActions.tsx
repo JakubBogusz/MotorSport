@@ -11,7 +11,7 @@ import { HiCog, HiUser } from "react-icons/hi2";
 import { useParamsStore } from "../hooks/useParamsStore";
 
 type Props = {
-  user: User;
+  user: Partial<User>;
 };
 
 export default function UserActions({ user }: Props) {
@@ -21,6 +21,8 @@ export default function UserActions({ user }: Props) {
 
   return (
     <Dropdown inline label={`Welcome ${user.name}`}>
+      <Dropdown.Item icon={HiUser}>My Auctions</Dropdown.Item>
+      <Dropdown.Item icon={AiFillTrophy}>Auctions won</Dropdown.Item>
       <Dropdown.Item icon={AiFillCar}>
         <Link href="/auctions/create">Sell my car</Link>
       </Dropdown.Item>
