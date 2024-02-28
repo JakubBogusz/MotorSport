@@ -6,8 +6,14 @@ import Input from "../components/Input";
 import { Button } from "flowbite-react";
 import { usePathname, useRouter } from "next/navigation";
 import DateInput from "../components/DateInput";
+import { createAuction, updateAuction } from "../actions/auctionActions";
+import { Auction } from "@/types";
 
-export default function AuctionForm() {
+type Props = {
+  auction?: Auction;
+};
+
+export default function AuctionForm({ auction }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const {
@@ -24,9 +30,28 @@ export default function AuctionForm() {
     setFocus("make");
   }, [setFocus]);
 
-  function onSubmit(data: FieldValues) {
-    console.log(data);
+  async function onSubmit(data: FieldValues) {
+    try {
+      let id = "";
+      let res;
+      if (pathname === "/auctions/create") {
+        res = await createAuction(data);
+        id = res.id;
+      } else {
+        if (auction) {
+          res = await updateAuction(data, auction.id);
+          id = auction.id;
+        }
+      }
+      if (res.error) {
+        throw res.error;
+      }
+      router.push(`/auctions/details/${id}`);
+    } catch (error: any) {
+      // toast.error(error.status + " " + error.message);
+    }
   }
+
   return (
     <form className="flex flex-col mt-3" onSubmit={handleSubmit(onSubmit)}>
       <Input
