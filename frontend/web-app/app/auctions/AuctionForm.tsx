@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
+import toast from "react-hot-toast";
 import { FieldValues, useForm } from "react-hook-form";
 import Input from "../components/Input";
 import { Button } from "flowbite-react";
@@ -27,8 +28,12 @@ export default function AuctionForm({ auction }: Props) {
   });
 
   useEffect(() => {
+    if (auction) {
+      const { make, model, color, mileage, year } = auction;
+      reset({ make, model, color, mileage, year });
+    }
     setFocus("make");
-  }, [setFocus]);
+  }, [setFocus, reset, auction]);
 
   async function onSubmit(data: FieldValues) {
     try {
@@ -48,7 +53,7 @@ export default function AuctionForm({ auction }: Props) {
       }
       router.push(`/auctions/details/${id}`);
     } catch (error: any) {
-      // toast.error(error.status + " " + error.message);
+      toast.error(error.status + " " + error.message);
     }
   }
 
