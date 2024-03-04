@@ -7,6 +7,7 @@ import DeleteButton from "./DeleteButton";
 import CountdownTimer from "../../CountdownTimer";
 import CarImage from "../../CarImage";
 import DetailedSpecs from "./DetailedSpecs";
+import BidList from "./BidList";
 
 export default async function Details({ params }: { params: { id: string } }) {
   const data = await getDetailedViewData(params.id);
@@ -36,7 +37,7 @@ export default async function Details({ params }: { params: { id: string } }) {
           <CarImage imageUrl={data.imageUrl} />
         </div>
 
-        {/* <BidList user={user} auction={data} /> */}
+        <BidList user={user} auction={data} />
       </div>
 
       <div className="mt-3 grid grid-cols-1 rounded-lg">
