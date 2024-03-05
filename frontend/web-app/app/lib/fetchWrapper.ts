@@ -1,6 +1,6 @@
 import { getUserToken } from "@/app/actions/authActions";
 
-const baseUrl = "http://localhost:6001/"; //process.env.API_URL
+const baseUrl = process.env.API_URL;
 
 async function get(url: string) {
   const requestOptions = {
@@ -52,7 +52,7 @@ async function getHeaders() {
 
 async function handleResponse(response: Response) {
   const text = await response.text();
-  
+
   let data;
   try {
     data = JSON.parse(text);
